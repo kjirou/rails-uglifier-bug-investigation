@@ -23,20 +23,56 @@ const SAMPLE_INVALID_OUTPUT = JSON.parse(fs.readFileSync(__dirname + '/../data/o
 
 describe('rails-uglifier-bug-investigation', function() {
   describe('compressed', function() {
-    it('間違った挙動が間違ったままである', function() {
+    it('サンプルデータを間違った結果へ変換する', function() {
       assert.deepStrictEqual(
         compressed(SAMPLE_INPUT),
         SAMPLE_INVALID_OUTPUT
       );
     });
+
+    [
+      [
+        [34],
+        [34],
+      ],
+      [
+        [34, 142, 230],
+        [34, 150],
+      ],
+    ].forEach(([actual, expected]) => {
+      it(`[${actual}] -> [${expected}]`, function() {
+        assert.deepStrictEqual(
+          compressed(new Uint8Array(actual)),
+          expected
+        );
+      });
+    });
   });
 
   describe('original', function() {
-    it('正しい挙動が正しいままである', function() {
+    it('サンプルデータを正しい結果へ変換する', function() {
       assert.deepStrictEqual(
         original(SAMPLE_INPUT),
         SAMPLE_VALID_OUTPUT
       );
+    });
+
+    [
+      [
+        [34],
+        [34],
+      ],
+      [
+        [34, 142, 230],
+        [34, 229, 143, 150],
+      ],
+    ].forEach(([actual, expected]) => {
+      it(`[${actual}] -> [${expected}]`, function() {
+        assert.deepStrictEqual(
+          original(new Uint8Array(actual)),
+          expected
+        );
+      });
     });
   });
 });
