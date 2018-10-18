@@ -2,10 +2,11 @@
 
 ## これは何？
 
-業務で Rails に乗ってる `uglifier == 4.1.9` で圧縮した関数が壊れてるっぽくて、壊れてることの確定と、可能ならどういう構文が壊れるのかを調査するために作ったリポジトリ。
+業務で、Rails に乗ってる `uglifier == 4.1.9` によって圧縮した関数が壊れてるっぽい事件があった。 
+それに対して、壊れてることの確定と、可能ならどういう構文が壊れるのかを調査するために作ったリポジトリ。
 
-`lib/SJISToUTF8.js` は、圧縮する前のあるライブラリのある一関数。
-それを `rails console` から `Uglifier.new(comments: :copyright).compress(src)` で圧縮したのが `SJISToUTF8-compressed.js`。
+`lib/SJISToUTF8.js` は、圧縮する前のあるライブラリのある一関数。 
+それを `rails console` から `Uglifier.new(comments: :copyright).compress(src)` で圧縮したのが `SJISToUTF8-compressed.js`。 
 それを読みやすいように prettier や手で整形してたのが `SJISToUTF8-compressed-and-formatted.js`。
 
 手で整形した時にロジックが変わらないことを検証するために、 `npm run test` で回帰テストが動くようにした。
@@ -36,7 +37,7 @@
 43         );
 ```
 
-`if (utf8 < 0xFFFF) {` と等価になりそうな部分が圧縮先にない。
+`if (utf8 < 0xFFFF) {` と等価になりそうな部分が圧縮先にない。 
 どうやら `utf8 < 65535 || ` という風に OR になってそう。
 
 というところまでしかわかってない。単体では再現できない。
