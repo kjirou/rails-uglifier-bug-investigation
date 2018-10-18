@@ -1,0 +1,1 @@
+# rails-uglifier-bug-investigation
